@@ -45,7 +45,7 @@ class NetClient {
 
   //post请求
   post(String url, Function successCallBack,
-      {params, Function errorCallBack}) async {
+      {FormData params, Function errorCallBack}) async {
     _requestHttp(url, successCallBack, POST, params, errorCallBack);
   }
 

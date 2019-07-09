@@ -140,12 +140,15 @@ class BlogItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return new GestureDetector(
-      child: new Card(
-        margin: EdgeInsets.only(top: 5, bottom: 5, left: 5, right: 5),
-        child: new Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: _buildItemLeftColumns(blogDetailData),
+      child: new Container(
+        height: 100,
+        child: new Card(
+          margin: EdgeInsets.only(top: 5, bottom: 5, left: 5, right: 5),
+          child: new Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: _buildItemLeftColumns(blogDetailData),
+          ),
         ),
       ),
       onTap: () {
@@ -170,7 +173,7 @@ List<Widget> _buildItemLeftColumns(BlogDetailData item) {
   list.add(new Container(
     child: Text(
       item.title,
-      maxLines: 2,
+      maxLines: 1,
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
           fontSize: 16.0, color: Colors.black, fontWeight: FontWeight.w500),
@@ -182,26 +185,28 @@ List<Widget> _buildItemLeftColumns(BlogDetailData item) {
     list.add(Container(
       child: Text(
         item.desc,
-        maxLines: 3,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
         style: TextStyle(color: Colors.grey, fontSize: 13.0),
       ),
       margin: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
     ));
   }
-  list.add(Padding(
-    padding: EdgeInsets.only(top: 5.0, bottom: 5.0, left: 10, right: 10),
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: <Widget>[
-        Icon(
-          Icons.access_time,
-          size: 13.0,
-          color: Colors.grey,
-        ),
-        Text(" ${item.niceDate} @${item.author}",
-            style: TextStyle(color: Colors.grey, fontSize: 13.0))
-      ],
+  list.add(
+   Padding(
+      padding: EdgeInsets.only(top: 5.0, bottom: 10.0, left: 10, right: 10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Icon(
+            Icons.access_time,
+            size: 13.0,
+            color: Colors.blueAccent,
+          ),
+          Text(" ${item.niceDate} @${item.author}",
+              style: TextStyle(color: Colors.grey, fontSize: 13.0))
+        ],
     ),
   ));
 //  var tags = _buildTagsAndDate(item);

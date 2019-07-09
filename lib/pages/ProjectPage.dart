@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:wan_android_flutter/bean/project/ProjectClassifyData.dart';
+import 'package:wan_android_flutter/bean/project/ProjectResponseData.dart';
+import 'package:wan_android_flutter/common/AppConstants.dart';
+import 'package:wan_android_flutter/network/NetClient.dart';
+import 'package:wan_android_flutter/view/ProjectTabWidget.dart';
 
 class ProjectPage extends StatefulWidget {
   @override
@@ -10,15 +15,18 @@ class ProjectPage extends StatefulWidget {
 
 class _ProjectPageState extends State<ProjectPage>
     with SingleTickerProviderStateMixin {
-  int mTabLength = 3;
+  List<ProjectClassifyData> mProjectClassifyDataList;
 
+  int mTabLength = 0;
   TabController _tabController;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _tabController = new TabController(length: mTabLength, vsync: this);
+    mProjectClassifyDataList = new List();
+
+    queryProjectClassifyData();
   }
 
   @override
@@ -38,28 +46,66 @@ class _ProjectPageState extends State<ProjectPage>
             title: new Text("项目"),
             centerTitle: true,
             bottom: new TabBar(
-              tabs: <Widget>[
-                new Tab(
-                  text: "完整项目",
-                ),
-                new Tab(
-                  text: "Flutter相关",
-                ),
-                new Tab(
-                  text: "开源",
-                ),
-              ],
+              tabs: genTabs(),
+              isScrollable: true,
               controller: _tabController,
             ),
           ),
           body: new TabBarView(
             controller: _tabController,
-            children: <Widget>[
-              new Center(child: new Text('自行车')),
-              new Center(child: new Text('船')),
-              new Center(child: new Text('巴士')),
-            ],
+            children: genTabContents(),
           ),
         ));
+  }
+
+  List<Widget> genTabs() {
+    List<Widget> tabs = new List();
+    if (mProjectClassifyDataList != null &&
+        mProjectClassifyDataList.length > 0) {
+      for (ProjectClassifyData classifyData in mProjectClassifyDataList) {
+//        print("tab title : " + classifyData.name);
+        tabs.add(new Tab(
+          text: classifyData.name,
+        ));
+      }
+    }
+    print("tabs length : " + tabs.length.toString());
+    return tabs;
+  }
+
+  List<Widget> genTabContents() {
+    List<ProjectTabWidget> contents = new List();
+    if (mProjectClassifyDataList != null &&
+        mProjectClassifyDataList.length > 0) {
+      for (ProjectClassifyData classifyData in mProjectClassifyDataList) {
+        contents.add(new ProjectTabWidget(classifyData.id));
+      }
+    }
+    return contents;
+  }
+
+  void queryProjectClassifyData() {
+    print("queryProjectClassifyData ---> ");
+    NetClient.getInstance().get("https://www.wanandroid.com/project/tree/json",
+        (response) {
+      if (response != null && response.data != null) {
+        print("queryProjectClassifyData ： " + response.data.toString());
+        ProjectResponseData projectResponseData =
+            ProjectResponseData.fromJson(response.data);
+        if (projectResponseData != null) {
+          if (AppConstants.SUC_CODE == projectResponseData.errorCode) {
+            setState(() {
+              mProjectClassifyDataList.clear();
+              mProjectClassifyDataList.addAll(projectResponseData.data);
+              mTabLength = mProjectClassifyDataList.length;
+              _tabController =
+                  new TabController(length: mTabLength, vsync: this);
+            });
+          } else {
+            print("请求失败 : " + projectResponseData.errorMsg);
+          }
+        }
+      }
+    });
   }
 }
