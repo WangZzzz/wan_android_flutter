@@ -19,23 +19,15 @@ class PreLoginWidget extends StatelessWidget {
         child: new Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            new Padding(
-              padding: EdgeInsets.only(top: 15, bottom: 15, left: 25),
-              child: new Container(
-                width: 60,
-                height: 60,
-                child: new CircleAvatar(
-                  backgroundImage: new NetworkImage(
-                      "https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=3463668003,3398677327&fm=58"),
+            new Container(
+              child: new Text(
+                "登录/注册",
+                style: new TextStyle(
+                  color: Colors.black,
+                  fontSize: 23,
                 ),
               ),
-            ),
-            new Text(
-              "登录/注册",
-              style: new TextStyle(
-                color: Colors.black,
-                fontSize: 23,
-              ),
+              margin: EdgeInsets.only(left: 30, top: 20, bottom: 20),
             ),
             new Padding(
               padding: EdgeInsets.only(right: 20),

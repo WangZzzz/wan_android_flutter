@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wan_android_flutter/bean/project/ProjectClassifyData.dart';
 import 'package:wan_android_flutter/bean/project/ProjectResponseData.dart';
@@ -38,24 +39,32 @@ class _ProjectPageState extends State<ProjectPage>
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    return new DefaultTabController(
-        length: mTabLength,
-        child: new Scaffold(
-          appBar: new AppBar(
-            title: new Text("项目"),
-            centerTitle: true,
-            bottom: new TabBar(
-              tabs: genTabs(),
-              isScrollable: true,
-              controller: _tabController,
+    if (mProjectClassifyDataList == null ||
+        mProjectClassifyDataList.length == 0) {
+      return Container(
+        child: CupertinoActivityIndicator(),
+        margin: EdgeInsets.only(top: 20),
+      );
+    } else {
+      // TODO: implement build
+      return new DefaultTabController(
+          length: mTabLength,
+          child: new Scaffold(
+            appBar: new AppBar(
+              title: new Text("项目"),
+              centerTitle: true,
+              bottom: new TabBar(
+                tabs: genTabs(),
+                isScrollable: true,
+                controller: _tabController,
+              ),
             ),
-          ),
-          body: new TabBarView(
-            controller: _tabController,
-            children: genTabContents(),
-          ),
-        ));
+            body: new TabBarView(
+              controller: _tabController,
+              children: genTabContents(),
+            ),
+          ));
+    }
   }
 
   List<Widget> genTabs() {

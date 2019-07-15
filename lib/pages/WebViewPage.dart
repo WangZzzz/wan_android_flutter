@@ -2,20 +2,19 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:wan_android_flutter/bean/base/BaseDetailData.dart';
 
 class WebViewPage extends StatefulWidget {
-  String news_url;
-  String title;
+  BaseDetailData detailData;
 
-  WebViewPage(this.news_url, this.title);
+  WebViewPage(this.detailData);
 
   @override
-  State<StatefulWidget> createState() => new _WebViewPageState(news_url, title);
+  State<StatefulWidget> createState() => new _WebViewPageState(this.detailData);
 }
 
 class _WebViewPageState extends State<WebViewPage> {
-  String news_url;
-  String title;
+  BaseDetailData detailData;
 
   // 标记是否是加载中
   bool loading = true;
@@ -33,7 +32,7 @@ class _WebViewPageState extends State<WebViewPage> {
   // 插件提供的对象，该对象用于WebView的各种操作
   FlutterWebviewPlugin flutterWebViewPlugin = new FlutterWebviewPlugin();
 
-  _WebViewPageState(this.news_url, this.title);
+  _WebViewPageState(this.detailData);
 
   @override
   void initState() {
@@ -74,31 +73,30 @@ class _WebViewPageState extends State<WebViewPage> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final width = size.width;
     List<Widget> titleContent = [];
-    titleContent.add(
-      new Text(
-        title,
+    titleContent.add(new Container(
+      child: new Text(
+        this.detailData.title,
         overflow: TextOverflow.ellipsis,
         maxLines: 1,
         style: new TextStyle(color: Colors.white),
-      )
-    );
-    if (loading) {
-      // 如果还在加载中，就在标题栏上显示一个圆形进度条
-      titleContent.add(new CupertinoActivityIndicator());
-    }
-    titleContent.add(new Container(width: 50.0));
+      ),
+      width: width * 3 / 5,
+    ));
+    titleContent.add(new Padding(padding: EdgeInsets.only(left: 10)));
+    titleContent.add(new TitleLikeWidget());
     // WebviewScaffold是插件提供的组件，用于在页面上显示一个WebView并加载URL
     return new WebviewScaffold(
       key: scaffoldKey,
-      url: news_url,
+      url: this.detailData.link,
       // 登录的URL
       appBar: new AppBar(
         title: new Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: titleContent,
         ),
-        iconTheme: new IconThemeData(color: Colors.white),
       ),
       withZoom: true,
       // 允许网页缩放
@@ -116,5 +114,55 @@ class _WebViewPageState extends State<WebViewPage> {
     onStateChanged.cancel();
     flutterWebViewPlugin.dispose();
     super.dispose();
+  }
+}
+
+class TitleLikeWidget extends StatefulWidget {
+  BaseDetailData detailData;
+
+  TitleLikeWidget(this.detailData);
+
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return _TitleLikeWidgetState();
+  }
+}
+
+class _TitleLikeWidgetState extends State<TitleLikeWidget> {
+  BaseDetailData detailData;
+
+  _TitleLikeWidgetState(this.detailData);
+
+  bool loved = false;
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    if (loved) {
+      return new GestureDetector(
+        onTap: () {
+          setState(() {
+            loved = false;
+          });
+        },
+        child: new Icon(
+          Icons.star,
+          color: Colors.redAccent,
+        ),
+      );
+    } else {
+      return new GestureDetector(
+        onTap: () {
+          setState(() {
+            loved = true;
+          });
+        },
+        child: new Icon(
+          Icons.star_border,
+          color: Colors.redAccent,
+        ),
+      );
+    }
   }
 }

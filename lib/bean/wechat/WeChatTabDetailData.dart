@@ -1,12 +1,12 @@
-import 'package:wan_android_flutter/bean/base/BaseDetailData.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:wan_android_flutter/bean/base/BaseDetailData.dart';
 import 'package:wan_android_flutter/bean/base/TabDetailTag.dart';
 
-part 'BlogDetailData.g.dart';
+part 'WeChatTabDetailData.g.dart';
 
 @JsonSerializable()
-class BlogDetailData extends BaseDetailData {
-  BlogDetailData(
+class WeChatTabDetailData extends BaseDetailData {
+  WeChatTabDetailData(
       int id,
       String appLink,
       String author,
@@ -57,8 +57,8 @@ class BlogDetailData extends BaseDetailData {
             zan,
             tags);
 
-  factory BlogDetailData.fromJson(Map<String, dynamic> json) =>
-      _$BlogDetailDataFromJson(json);
+  factory WeChatTabDetailData.fromJson(Map<String, dynamic> json) =>
+      _$WeChatTabDetailDataFromJson(json);
 
-  Map<String, dynamic> toJson() => _$BlogDetailDataToJson(this);
+  Map<String, dynamic> toJson() => _$WeChatTabDetailDataToJson(this);
 }

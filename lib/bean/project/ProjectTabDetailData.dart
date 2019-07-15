@@ -1,76 +1,64 @@
-import 'package:wan_android_flutter/bean/project/ProjectTabDetailTag.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:wan_android_flutter/bean/base/BaseDetailData.dart';
+import 'package:wan_android_flutter/bean/base/TabDetailTag.dart';
 
 part 'ProjectTabDetailData.g.dart';
 
 @JsonSerializable()
-class ProjectTabDetailData {
+class ProjectTabDetailData extends BaseDetailData {
   ProjectTabDetailData(
-      this.id,
-      this.appLink,
-      this.author,
-      this.chapterId,
-      this.chapterName,
-      this.collect,
-      this.courseId,
-      this.desc,
-      this.envelopePic,
-      this.fresh,
-      this.link,
-      this.niceDate,
-      this.origin,
-      this.prefix,
-      this.projectLink,
-      this.publishTime,
-      this.superChapterId,
-      this.superChapterName,
-      this.title,
-      this.type,
-      this.userId,
-      this.visible,
-      this.zan,
-      this.tags);
-
-  int id;
-  String appLink;
-  String author;
-  int chapterId;
-  String chapterName;
-  bool collect;
-  int courseId;
-  String desc;
-  String envelopePic;
-  bool fresh;
-  String link;
-  String niceDate;
-  String origin;
-  String prefix;
-  String projectLink;
-  int publishTime;
-  int superChapterId;
-  String superChapterName;
-  String title;
-  int type;
-  int userId;
-  int visible;
-  int zan;
-  List<ProjectTabDetailTag> tags;
+      int id,
+      String appLink,
+      String author,
+      int chapterId,
+      String chapterName,
+      bool collect,
+      int courseId,
+      String desc,
+      String envelopePic,
+      bool fresh,
+      String link,
+      String niceDate,
+      String origin,
+      String prefix,
+      String projectLink,
+      int publishTime,
+      int superChapterId,
+      String superChapterName,
+      String title,
+      int type,
+      int userId,
+      int visible,
+      int zan,
+      List<TabDetailTag> tags)
+      : super(
+            id,
+            appLink,
+            author,
+            chapterId,
+            chapterName,
+            collect,
+            courseId,
+            desc,
+            envelopePic,
+            fresh,
+            link,
+            niceDate,
+            origin,
+            prefix,
+            projectLink,
+            publishTime,
+            superChapterId,
+            superChapterName,
+            title,
+            type,
+            userId,
+            visible,
+            zan,
+            tags);
 
   factory ProjectTabDetailData.fromJson(Map<String, dynamic> json) =>
       _$ProjectTabDetailDataFromJson(json);
 
   Map<String, dynamic> toJson() => _$ProjectTabDetailDataToJson(this);
-
-  @override
-  // TODO: implement hashCode
-  int get hashCode => id;
-
-  @override
-  bool operator ==(other) {
-    // TODO: implement ==
-    if (other == null) {
-      return false;
-    }
-    return other.id == this.id;
-  }
 }

@@ -1,32 +1,32 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:wan_android_flutter/bean/project/ProjectTabDetailData.dart';
-import 'package:wan_android_flutter/bean/project/ProjectTabResponseData.dart';
+import 'package:wan_android_flutter/bean/wechat/WeChatTabDetailData.dart';
+import 'package:wan_android_flutter/bean/wechat/WeChatTabResponseData.dart';
 import 'package:wan_android_flutter/common/AppConstants.dart';
 import 'package:wan_android_flutter/network/NetClient.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:wan_android_flutter/pages/WebViewPage.dart';
 
-class ProjectTabWidget extends StatefulWidget {
-  int cid;
+class WeChatTabWidget extends StatefulWidget {
+  int id;
 
-  ProjectTabWidget(this.cid);
+  WeChatTabWidget(this.id);
 
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _ProjectTabWidgetState(this.cid);
+    return _WeChatTabWidgetState(this.id);
   }
 }
 
-class _ProjectTabWidgetState extends State<ProjectTabWidget>
+class _WeChatTabWidgetState extends State<WeChatTabWidget>
     with AutomaticKeepAliveClientMixin {
-  List<ProjectTabDetailData> projectDetailDataList = new List();
+  List<WeChatTabDetailData> weChatDetailDataList = new List();
 
   ScrollController _scrollController = new ScrollController();
-  int cid;
+  int id;
 
-  _ProjectTabWidgetState(this.cid);
+  _WeChatTabWidgetState(this.id);
 
   int mOffset = 1;
 
@@ -58,30 +58,32 @@ class _ProjectTabWidgetState extends State<ProjectTabWidget>
               backgroundColor: Colors.black54,
               textColor: Colors.white);
         } else {
-          queryProjectTabData();
+          queryWeChatTabData();
         }
       }
     });
-    queryProjectTabData();
+    queryWeChatTabData();
   }
 
-  void queryProjectTabData() {
-    String url = "https://www.wanandroid.com/project/list/" +
-        mOffset.toString() +
-        "/json?cid=" +
-        this.cid.toString();
-    print("queryProjectTabData url --> " + url);
+  void queryWeChatTabData() {
+    String url = "https://wanandroid.com/wxarticle/list/" +
+        this.id.toString() +
+        "/" +
+        this.mOffset.toString() +
+        "/json";
+
+    print("queryWeChatTabData url --> " + url);
     NetClient.getInstance().get(url, (response) {
-      ProjectTabResponseData tabResponseData =
-          ProjectTabResponseData.fromJson(response.data);
+      WeChatTabResponseData tabResponseData =
+          WeChatTabResponseData.fromJson(response.data);
       if (tabResponseData.errorCode == AppConstants.SUC_CODE) {
         setState(() {
           pageCount = tabResponseData.data.pageCount;
           if (tabResponseData.data != null) {
-            for (ProjectTabDetailData data in tabResponseData.data.datas) {
-              if (!projectDetailDataList.contains(data)) {
+            for (WeChatTabDetailData data in tabResponseData.data.datas) {
+              if (!weChatDetailDataList.contains(data)) {
                 //防止重复添加，复写hashcode和==方法，根据id比较
-                projectDetailDataList.add(data);
+                weChatDetailDataList.add(data);
               }
             }
           }
@@ -97,22 +99,22 @@ class _ProjectTabWidgetState extends State<ProjectTabWidget>
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    if (projectDetailDataList == null || projectDetailDataList.length == 0) {
+    if (weChatDetailDataList == null || weChatDetailDataList.length == 0) {
       return Container(
         child: CupertinoActivityIndicator(),
         margin: EdgeInsets.only(top: 20),
       );
     } else {
+      // TODO: implement build
       return new Container(
         height: 600,
         child: ListView.builder(
           physics: AlwaysScrollableScrollPhysics(),
           controller: _scrollController,
           itemCount:
-              projectDetailDataList == null ? 0 : projectDetailDataList.length,
+              weChatDetailDataList == null ? 0 : weChatDetailDataList.length,
           itemBuilder: (BuildContext context, int position) {
-            return ProjectItemWidget(projectDetailDataList[position]);
+            return ProjectItemWidget(weChatDetailDataList[position]);
           },
         ),
       );
@@ -125,7 +127,7 @@ class _ProjectTabWidgetState extends State<ProjectTabWidget>
 }
 
 class ProjectItemWidget extends StatelessWidget {
-  ProjectTabDetailData projectTabDetailData;
+  WeChatTabDetailData projectTabDetailData;
 
   ProjectItemWidget(this.projectTabDetailData);
 
@@ -152,28 +154,37 @@ class ProjectItemWidget extends StatelessWidget {
                 ),
                 margin: EdgeInsets.only(left: 10, right: 10, top: 10),
               ),
-              new Padding(padding: EdgeInsets.only(top: 10)),
-              new Container(
-                child: new Text(
-                  projectTabDetailData.desc,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                margin: EdgeInsets.only(left: 10, right: 10, top: 5),
-              ),
               new Padding(padding: EdgeInsets.only(top: 15)),
               new Container(
                 child: new Row(
                   children: <Widget>[
-                    new Icon(
-                      Icons.access_time,
-                      color: Colors.blueAccent,
-                      size: 20,
+                    new Text(
+                      "公众号",
+                      style: new TextStyle(
+                        color: Color(0xFF228B22),
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     new Padding(padding: EdgeInsets.only(left: 5)),
-                    new Text(projectTabDetailData.niceDate),
-                    new Padding(padding: EdgeInsets.only(left: 5)),
-                    new Text("@" + projectTabDetailData.author),
+                    new Container(
+                      child: new Icon(
+                        Icons.access_time,
+                        color: Colors.blueAccent,
+                        size: 20,
+                      ),
+                      margin: EdgeInsets.only(top: 3),
+                    ),
+                    new Container(
+                      child: new Text(projectTabDetailData.niceDate),
+                      margin: EdgeInsets.only(top: 5),
+                    ),
+                    new Padding(padding: EdgeInsets.only(left: 3)),
+                    new Text(
+                      "@" + projectTabDetailData.author,
+                      style: new TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ],
                 ),
                 margin:
@@ -187,9 +198,7 @@ class ProjectItemWidget extends StatelessWidget {
         print("点击了：" + projectTabDetailData.title);
         Navigator.of(context).push(new MaterialPageRoute(
           builder: (context) {
-            return new WebViewPage(
-              projectTabDetailData
-            );
+            return new WebViewPage(projectTabDetailData);
             //link,
             // title为需要传递的参数
           },

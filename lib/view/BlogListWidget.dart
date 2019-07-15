@@ -155,10 +155,7 @@ class BlogItemWidget extends StatelessWidget {
         print("点击了：" + blogDetailData.link);
         Navigator.of(context).push(new MaterialPageRoute(
           builder: (context) {
-            return new WebViewPage(
-              blogDetailData.link,
-              blogDetailData.title,
-            );
+            return new WebViewPage(blogDetailData);
             //link,
             // title为需要传递的参数
           },
@@ -192,21 +189,20 @@ List<Widget> _buildItemLeftColumns(BlogDetailData item) {
       margin: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
     ));
   }
-  list.add(
-   Padding(
-      padding: EdgeInsets.only(top: 5.0, bottom: 10.0, left: 10, right: 10),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Icon(
-            Icons.access_time,
-            size: 13.0,
-            color: Colors.blueAccent,
-          ),
-          Text(" ${item.niceDate} @${item.author}",
-              style: TextStyle(color: Colors.grey, fontSize: 13.0))
-        ],
+  list.add(Padding(
+    padding: EdgeInsets.only(top: 5.0, bottom: 10.0, left: 10, right: 10),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Icon(
+          Icons.access_time,
+          size: 13.0,
+          color: Colors.blueAccent,
+        ),
+        Text(" ${item.niceDate} @${item.author}",
+            style: TextStyle(color: Colors.grey, fontSize: 13.0))
+      ],
     ),
   ));
 //  var tags = _buildTagsAndDate(item);

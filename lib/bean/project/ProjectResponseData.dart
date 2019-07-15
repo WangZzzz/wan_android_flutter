@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:wan_android_flutter/bean/BaseModel.dart';
+import 'package:wan_android_flutter/bean/base/BaseModel.dart';
 import 'package:wan_android_flutter/bean/project/ProjectClassifyData.dart';
 
 part 'ProjectResponseData.g.dart';
