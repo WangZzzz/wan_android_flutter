@@ -40,17 +40,20 @@ class NetClient {
   //get请求
   get(String url, Function successCallBack,
       {params, Function errorCallBack}) async {
-    _requestHttp(url, successCallBack, GET, params, errorCallBack);
+    _requestHttp(url, successCallBack, GET, params, null, errorCallBack);
   }
 
   //post请求
   post(String url, Function successCallBack,
       {FormData params, Function errorCallBack}) async {
-    _requestHttp(url, successCallBack, POST, params, errorCallBack);
+    _requestHttp(url, successCallBack, POST, null, params, errorCallBack);
   }
 
   _requestHttp(String url, Function successCallBack,
-      [String method, FormData params, Function errorCallBack]) async {
+      [String method,
+      Map<String, dynamic> params,
+      FormData formData,
+      Function errorCallBack]) async {
     String errorMsg = '';
     int code;
 
@@ -58,15 +61,15 @@ class NetClient {
       Response response;
 //      _addStartHttpInterceptor(dio); //添加请求之前的拦截器
       if (method == GET) {
-        if (params != null && params.isNotEmpty) {
+        if (params != null) {
           response = await dio.get(url, queryParameters: params);
         } else {
           print("dio.get(url)");
           response = await dio.get(url);
         }
       } else if (method == POST) {
-        if (params != null && params.isNotEmpty) {
-          response = await dio.post(url, data: params);
+        if (params != null) {
+          response = await dio.post(url, data: formData);
         } else {
           response = await dio.post(url);
         }

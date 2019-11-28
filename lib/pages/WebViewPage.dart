@@ -59,6 +59,8 @@ class _WebViewPageState extends State<WebViewPage> {
             parseResult();
           }
           break;
+        default:
+          break;
       }
     });
   }
@@ -86,7 +88,7 @@ class _WebViewPageState extends State<WebViewPage> {
       width: width * 3 / 5,
     ));
     titleContent.add(new Padding(padding: EdgeInsets.only(left: 10)));
-    titleContent.add(new TitleLikeWidget());
+    titleContent.add(new TitleLikeWidget(this.detailData));
     // WebviewScaffold是插件提供的组件，用于在页面上显示一个WebView并加载URL
     return new WebviewScaffold(
       key: scaffoldKey,
@@ -125,7 +127,7 @@ class TitleLikeWidget extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _TitleLikeWidgetState();
+    return _TitleLikeWidgetState(this.detailData);
   }
 }
 

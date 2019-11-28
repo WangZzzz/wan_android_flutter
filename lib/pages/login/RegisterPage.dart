@@ -167,7 +167,7 @@ class _RegisterPageState extends State<RegisterPage> {
       "password": password,
       "repassword": repassword
     };
-    FormData formData = new FormData.from(params);
+    FormData formData = new FormData.fromMap(params);
     NetClient.getInstance().post(registerUrl, (response) {
       LoginResponseData loginResponseData =
           LoginResponseData.fromJson(response.data);

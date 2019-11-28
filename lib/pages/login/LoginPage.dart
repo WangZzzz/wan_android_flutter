@@ -148,7 +148,7 @@ class _LoginPageState extends State<LoginPage> {
     print("开始登录 " + mUsername + "@" + mPassword);
     String loginUrl = "https://www.wanandroid.com/user/login";
     var params = {"username": mUsername, "password": mPassword};
-    FormData loginParams = FormData.from(params);
+    FormData loginParams = FormData.fromMap(params);
     NetClient.getInstance().post(loginUrl, (response) {
       print("登录结果：" + response.data.toString());
       LoginResponseData loginResponseData =
